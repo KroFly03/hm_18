@@ -28,3 +28,12 @@ class MovieDAO:
         self.session.commit()
 
         return movie
+
+    def get_one_by_director_id(self, did):
+        return self.session.query(Movie).filter(Movie.director_id == did).all()
+
+    def get_one_by_genre_id(self, gid):
+        return self.session.query(Movie).filter(Movie.genre_id == gid).all()
+
+    def get_one_by_year(self, year):
+        return self.session.query(Movie).filter(Movie.year == year).all()
