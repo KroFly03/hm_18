@@ -14,7 +14,8 @@ movies_schema = MovieSchema(many=True)
 class MoviesView(Resource):
     def get(self):
         try:
-            all_movies = movie_service.get_all()
+            args = request.args
+            all_movies = movie_service.get_all(args)
             return movies_schema.dump(all_movies), 200
         except Exception:
             return "Not found", 404
@@ -35,7 +36,7 @@ class MovieView(Resource):
         except Exception:
             return "Not found", 404
 
-    def put(self):
+    def put(self, mid):
         data = request.json
         movie_service.update(data)
 

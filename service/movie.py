@@ -9,8 +9,19 @@ class MovieService:
     def get_one(self, did):
         return self.dao.get_one(did)
 
-    def get_all(self):
-        return self.dao.get_all()
+    def get_all(self, args):
+        director = args.get('director_id')
+        genre = args.get('genre_id')
+        year = args.get('year')
+
+        if director is not None:
+            return self.dao.get_one_by_director_id(director)
+        if genre is not None:
+            return self.dao.get_one_by_genre_id(genre)
+        if year is not None:
+            return self.dao.get_one_by_year(year)
+        else:
+            return self.dao.get_all()
 
     def create(self, data):
         movie = Movie(**data)

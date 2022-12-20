@@ -8,15 +8,15 @@ from view.genres import genre_ns
 from view.movies import movie_ns
 
 
-def create_app(config: Config) -> Flask:
+def create_app(config):
     application = Flask(__name__)
     application.config.from_object(config)
-    application.app_context().push()
+    configure_app(application)
 
     return application
 
 
-def configure_app(application: Flask):
+def configure_app(application):
     db.init_app(application)
     api = Api(application)
     api.add_namespace(genre_ns)
@@ -27,7 +27,4 @@ def configure_app(application: Flask):
 if __name__ == '__main__':
     app_config = Config()
     app = create_app(app_config)
-
-    configure_app(app)
-
     app.run()
