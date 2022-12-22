@@ -2,6 +2,7 @@ from flask_restx import Resource, Namespace
 from flask import request
 
 from dao.model.movie import MovieSchema
+from decorators import auth_required, admin_required
 from implemented import movie_service
 
 movie_ns = Namespace('movies')
@@ -12,6 +13,7 @@ movies_schema = MovieSchema(many=True)
 
 @movie_ns.route('/')
 class MoviesView(Resource):
+    @auth_required
     def get(self):
         try:
             args = request.args
@@ -20,6 +22,7 @@ class MoviesView(Resource):
         except Exception:
             return "Not found", 404
 
+    @admin_required
     def post(self):
         data = request.json
         movie_service.create(data)
@@ -29,6 +32,7 @@ class MoviesView(Resource):
 
 @movie_ns.route('/<int:mid>')
 class MovieView(Resource):
+    @auth_required
     def get(self, mid):
         try:
             movie = movie_service.get_one(mid)
@@ -36,12 +40,14 @@ class MovieView(Resource):
         except Exception:
             return "Not found", 404
 
+    @admin_required
     def put(self, mid):
         data = request.json
         movie_service.update(data)
 
         return "Movie updated", 204
 
+    @admin_required
     def delete(self, mid):
         movie_service.delete(mid)
 
